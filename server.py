@@ -52,15 +52,15 @@ def posting():
 	#########################
 	#VALIDATING THE PASSWORD#
 	#########################
-	lengthofpassword = len(request.form['password_1'])
+	thepassword = request.form['password_1']
 
 	if len(request.form['password_1']) < 8:
 		flash("Password must be at least 8 characters.")
 		return redirect("/")
-	elif any(not type(char) == "int" for char in range(0,lengthofpassword)) == False:
+	elif any(type(char) == int for char in thepassword) == False:
 			flash("You must include at least 1 number in your password.")
 			return redirect("/")
-	elif any(not type(char) == "str" and char.isupper() for char in range(0,lengthofpassword)) == False:
+	elif any(type(char) == "str" and char.isupper() for char in thepassword) == False:
 			flash("You must include at least 1 capital alphabetic letter.")
 			return redirect("/")
 	else:
