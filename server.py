@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, flash, session
 import re
 # create a regular expression object that we can use run operations on
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+PASSWORD_REGEX = re.compile(r'^([^0-9]*|[^A-Z]*)$')
 app = Flask(__name__)
 app.secret_key = 'secret103048580e8w7'
 
@@ -57,12 +58,9 @@ def posting():
 	if len(request.form['password_1']) < 8:
 		flash("Password must be at least 8 characters.")
 		return redirect("/")
-	elif any(type(char) == int for char in thepassword) == False:
-			flash("You must include at least 1 number in your password.")
-			return redirect("/")
-	elif any(type(char) == "str" and char.isupper() for char in thepassword) == False:
-			flash("You must include at least 1 capital alphabetic letter.")
-			return redirect("/")
+	elif PASSWORD_REGEX.match(request.form['password_1']):
+		flash("You must include at least 1 number and 1 uppercase letter in your password.")
+		return redirect("/")
 	else:
 		session['password_1'] = request.form['password_1'] 
 
